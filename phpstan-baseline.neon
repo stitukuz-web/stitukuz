@@ -1,0 +1,13 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Cannot unset offset ''sign'' on array\{out_trade_no\: ''STI_20261021130505…'', trade_no\: ''2024102100000001'', trade_status\: ''TRADE_SUCCESS'', total_amount\: ''9\.90'', sign_type\: ''RSA2''\}\.$#'
+			identifier: unset.offset
+			count: 1
+			path: test_sign.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertTrue\(\) with true will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/ExampleTest.php

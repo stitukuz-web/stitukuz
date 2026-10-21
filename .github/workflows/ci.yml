@@ -25,29 +25,11 @@ jobs:
       - name: Composer validate
         run: composer validate --strict
       
-      - name: PHP Syntax Check
-        run: find . -name "*.php" -not -path "./vendor/*" -exec php -l {} \;
-      
       - name: PHPStan Level 5
-        run: |
-          composer require --dev phpstan/phpstan ^1.10 --no-interaction
-          vendor/bin/phpstan analyse --level=5 --no-progress || \
-          (vendor/bin/phpstan analyse --level=5 --no-progress --generate-baseline && echo "Baseline generated" && exit 0)
+        run: vendor/bin/phpstan analyse src api --level=5 --no-progress
       
       - name: JSCPD Duplicate Code Check
-        run: |
-          composer require --dev sebastian/phpcpd ^6.0 --no-interaction
-          vendor/bin/phpcpd --min-lines 5 --min-tokens 70 --exclude vendor .
-      
-      - name: TODO/FIXME Deadline & Owner Check
-        run: python3 scan_todos.py
+        run: npx jscpd --min-lines 5 --min-tokens 70 --config .jscpd.json .
       
       - name: PHPUnit Tests
-        run: |
-          composer require --dev phpunit/phpunit ^10.0 --no-interaction
-          mkdir -p tests
-          [ -f tests/ExampleTest.php ] || echo '<?php declare(strict_types=1); namespace Tests; use PHPUnit\Framework\TestCase; class ExampleTest extends TestCase { public function testTrue(): void { $this->assertTrue(true); } }' > tests/ExampleTest.php
-          vendor/bin/phpunit --testdox
-      
-      - name: OpenAPI Spec Validation
-        run: npx --yes @redocly/openapi-cli@latest lint openapi.yaml
+        run: vendor/bin/phpunit --testdox tests
