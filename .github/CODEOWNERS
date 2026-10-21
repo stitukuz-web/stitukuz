@@ -1,0 +1,34 @@
+# sTi 代码所有者映射
+# 格式：路径模式  所有者（GitHub 用户名/团队名）
+
+# 核心支付逻辑 - 必须由支付组审批
+/api/pay/                           @sti-team/payments
+
+# 认证/授权中间件 - 安全组审批
+/auth_middleware.php                @sti-team/security
+
+# OpenAPI 契约 - 架构组审批
+openapi.yaml                        @sti-team/arch
+
+# CI/CD 配置 - DevOps 组审批
+.github/workflows/                  @sti-team/devops
+.github/dependabot.yml              @sti-team/devops
+
+# 前端类型/封装 - 前端组审批
+src/types/                          @sti-team/frontend
+src/api/                            @sti-team/frontend
+
+# 认证页面 - 全栈组审批
+login.php                           @sti-team/fullstack
+report_view.php                     @sti-team/fullstack
+product_view.php                    @sti-team/fullstack
+
+# 配置文件 - 架构组审批
+composer.json                       @sti-team/arch
+composer.lock                       @sti-team/arch
+
+# 文档 - 文档组审批
+*.md                                @sti-team/docs
+
+# 默认兜底 - 核心团队
+*                                   @sti-team/core
