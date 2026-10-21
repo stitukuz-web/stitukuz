@@ -1,0 +1,40 @@
+version: 2
+updates:
+  # PHP 依赖 (composer)
+  - package-ecosystem: "composer"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "03:00"
+      timezone: "Asia/Shanghai"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "composer"
+    commit-message:
+      prefix: "chore(deps): "
+      include: "scope"
+    # 忽略有安全公告的版本（已在 composer.json 配置 audit.block-insecure=false）
+    # 如需忽略特定包可取消注释下方
+    # ignore:
+    #   - dependency-name: "firebase/php-jwt"
+    #     versions: [">= 6.0.0, < 6.11.1"]
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "03:30"
+      timezone: "Asia/Shanghai"
+    labels:
+      - "dependencies"
+      - "github-actions"
+
+  # 前端 (如有 package.json)
+  # - package-ecosystem: "npm"
+  #   directory: "/"
+  #   schedule:
+  #     interval: "weekly"

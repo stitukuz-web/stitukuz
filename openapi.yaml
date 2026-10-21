@@ -1,0 +1,160 @@
+openapi: 3.0.3
+info:
+  title: sTi Payment API
+  version: 1.0.0
+  description: 支付宝支付/回调/查询/退款接口契约
+servers:
+  - url: https://api.sti.example.com
+    description: 生产环境
+  - url: http://localhost:8080
+    description: 本地开发
+paths:
+  /api/pay/create.php:
+    post:
+      summary: 创建支付订单
+      operationId: createPayment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [uid, plan, amount]
+              properties:
+                uid:
+                  type: integer
+                  description: 用户ID
+                plan:
+                  type: string
+                  enum: [vip, pro, trial]
+                  description: 套餐代码
+                amount:
+                  type: integer
+                  description: 金额(分)
+      responses:
+        '200':
+          description: 创建成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  orderId:
+                    type: string
+                  payUrl:
+                    type: string
+                  qrCode:
+                    type: string
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/pay/notify.php:
+    post:
+      summary: 支付宝异步回调
+      operationId: notifyPayment
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                out_trade_no:
+                  type: string
+                trade_no:
+                  type: string
+                buyer_id:
+                  type: string
+                total_amount:
+                  type: string
+                trade_status:
+                  type: string
+                  enum: [TRADE_SUCCESS, TRADE_FINISHED, TRADE_CLOSED]
+                sign:
+                  type: string
+      responses:
+        '200':
+          description: 回调处理成功，返回 success
+  /api/pay/query.php:
+    get:
+      summary: 查询订单支付状态
+      operationId: queryPayment
+      parameters:
+        - name: orderId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 查询成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  orderId:
+                    type: string
+                  status:
+                    type: string
+                    enum: [pending, paid, failed, expired]
+                  paidAt:
+                    type: string
+                    format: date-time
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /api/pay/refund.php:
+    post:
+      summary: 申请退款
+      operationId: refundPayment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [orderId, amount, reason]
+              properties:
+                orderId:
+                  type: string
+                amount:
+                  type: integer
+                reason:
+                  type: string
+      responses:
+        '200':
+          description: 退款申请受理
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  responses:
+    BadRequest:
+      description: 参数错误
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: 未登录或 Token 失效
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: 订单不存在
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string

@@ -1,0 +1,24 @@
+{
+    "name": "sti/sti",
+    "description": "sTi - 紫微斗数+星座融合的 AI 人格画像",
+    "license": "proprietary",
+    "require": {
+        "yansongda/pay": "^3.0",
+        "vlucas/phpdotenv": "^5.5",
+        "hyperf/pimple": "^2.2",
+        "firebase/php-jwt": "^6.0"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^2.3",
+        "phpunit/phpunit": "^13.4"
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/security-audit": false,
+            "dealerdirect/phpcodesniffer": false
+        },
+        "audit": {
+            "block-insecure": false
+        }
+    }
+}
