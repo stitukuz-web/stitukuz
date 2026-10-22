@@ -29,7 +29,7 @@ jobs:
         run: vendor/bin/phpstan analyse --configuration phpstan.neon --no-progress
       
       - name: JSCPD Duplicate Code Check
-        run: npx jscpd --min-lines 5 --min-tokens 70 --config .jscpd.json .
+        run: npx --yes jscpd@5 --min-lines 5 --min-tokens 70 --config .jscpd.json .
       
       - name: PHPUnit Tests
         run: vendor/bin/phpunit --testdox tests

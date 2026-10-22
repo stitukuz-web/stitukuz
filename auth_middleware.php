@@ -52,7 +52,7 @@ function auth_required(): array {
 
 function auth_optional(): ?array {
     $token = $_COOKIE[COOKIE_NAME] ?? ($_SERVER['HTTP_AUTHORIZATION'] ?? '');
-    if (preg_match('/^Bearer\s+(.+)$/i', $token ?? '', $m)) $token = $m[1];
+    if (preg_match('/^Bearer\s+(.+)$/i', $token, $m)) $token = $m[1];
     if (!$token) return null;
     try {
         return (array)JWT::decode($token, new Key(get_jwt_secret(), 'HS256'));

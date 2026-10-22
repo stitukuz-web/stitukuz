@@ -2,7 +2,10 @@ includes:
     - phpstan-baseline.neon
 
 parameters:
+    # 只分析仓库内真实存在的 PHP 文件（api/ 等未入库文件不在 CI 检出内容里）
     paths:
-        - src
-        - api
+        - auth_middleware.php
+        - login.php
+        - product_view.php
+        - report_view.php
     level: 5
