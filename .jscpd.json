@@ -2,13 +2,13 @@
   "threshold": 5,
   "minLines": 5,
   "minTokens": 70,
-  "excludes": [
+  "ignore": [
     ".github/AC_PRODUCT.md",
     ".github/AC_REPORT.md",
     "api/pay/refund.php",
     "product.html",
     "report.html",
-    "report/jscpd-report.html"
+    "report/**"
   ],
   "reporters": ["json", "html"]
 }
